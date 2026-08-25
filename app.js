@@ -58,6 +58,51 @@ function destacar(texto, termo) {
   return texto.slice(0, idx) + '<mark>' + texto.slice(idx, idx + termo.length) + '</mark>' + texto.slice(idx + termo.length);
 }
 
+const areaImpressao = document.getElementById('areaImpressao');
+
+function imprimirPreparo(estabelecimento, procedimento, texto) {
+  const hoje = new Date().toLocaleDateString('pt-BR');
+
+  areaImpressao.innerHTML = '';
+
+  const cabecalho = document.createElement('div');
+  cabecalho.className = 'impressao-cabecalho';
+  cabecalho.innerHTML = `
+    <img src="assets/logo.png" alt="CISLAGOS" onerror="this.style.display='none'">
+    <div>
+      <div class="impressao-titulo-cislagos">CISLAGOS</div>
+      <div class="impressao-subtitulo-cislagos">Consórcio Intermunicipal de Saúde dos Municípios da Região dos Lagos do Sul de Minas</div>
+    </div>`;
+
+  const h1 = document.createElement('h1');
+  h1.textContent = procedimento;
+
+  const pEstab = document.createElement('p');
+  pEstab.className = 'impressao-estabelecimento';
+  pEstab.textContent = estabelecimento;
+
+  const corpo = document.createElement('div');
+  corpo.className = 'impressao-texto';
+  corpo.textContent = texto;
+
+  const rodape = document.createElement('div');
+  rodape.className = 'impressao-rodape';
+  rodape.innerHTML = `<span>Catálogo de Prestadores Credenciados — CISLAGOS</span><span>Impresso em ${hoje}</span>`;
+
+  areaImpressao.appendChild(cabecalho);
+  areaImpressao.appendChild(h1);
+  areaImpressao.appendChild(pEstab);
+  areaImpressao.appendChild(corpo);
+  areaImpressao.appendChild(rodape);
+
+  document.body.classList.add('imprimindo-preparo');
+  window.print();
+}
+
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('imprimindo-preparo');
+});
+
 function enderecoTexto(end) {
   let partes = [];
   if (end.label) partes.push(end.label);
@@ -162,11 +207,25 @@ function renderCard(e, termo) {
     e.preparos.forEach(p => {
       const item = document.createElement('div');
       item.className = 'preparo-item';
+
+      const itemHeader = document.createElement('div');
+      itemHeader.className = 'preparo-item-header';
+
       const h3 = document.createElement('h3');
       h3.innerHTML = destacar(p.procedimento, termo);
+      itemHeader.appendChild(h3);
+
+      const btnImprimir = document.createElement('button');
+      btnImprimir.type = 'button';
+      btnImprimir.className = 'preparo-imprimir';
+      btnImprimir.textContent = 'Imprimir';
+      btnImprimir.addEventListener('click', () => imprimirPreparo(e.nome, p.procedimento, p.texto));
+      itemHeader.appendChild(btnImprimir);
+
       const par = document.createElement('p');
       par.textContent = p.texto;
-      item.appendChild(h3);
+
+      item.appendChild(itemHeader);
       item.appendChild(par);
       listaPrep.appendChild(item);
     });

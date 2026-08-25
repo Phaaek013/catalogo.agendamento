@@ -214,10 +214,33 @@ body{
   padding:10px 12px;
   background:#FAFAF8;
 }
+.preparo-item-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:6px;
+}
 .preparo-item h3{
-  margin:0 0 6px;
+  margin:0;
   font-size:0.86rem;
   color:var(--azul);
+}
+.preparo-imprimir{
+  flex-shrink:0;
+  font-size:0.72rem;
+  font-weight:600;
+  padding:4px 10px;
+  border-radius:6px;
+  border:1px solid var(--azul-claro);
+  background:#fff;
+  color:var(--azul-claro);
+  cursor:pointer;
+  white-space:nowrap;
+}
+.preparo-imprimir:hover{
+  background:var(--azul-claro);
+  color:#fff;
 }
 .preparo-item p{
   margin:0;
@@ -318,6 +341,50 @@ mark{
   color:inherit;
   border-radius:3px;
   padding:0 2px;
+}
+
+.area-impressao{ display:none; }
+
+@media print{
+  body.imprimindo-preparo .topbar,
+  body.imprimindo-preparo .controls,
+  body.imprimindo-preparo .lista,
+  body.imprimindo-preparo .sem-resultados,
+  body.imprimindo-preparo .rodape{
+    display:none !important;
+  }
+  body.imprimindo-preparo .area-impressao{
+    display:block;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#2B2F33;
+    max-width:700px;
+    margin:0 auto;
+    line-height:1.5;
+  }
+  .impressao-cabecalho{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    border-bottom:3px solid #1B3A6B;
+    padding-bottom:14px;
+    margin-bottom:20px;
+  }
+  .impressao-cabecalho img{ height:48px; }
+  .impressao-titulo-cislagos{ font-size:1.05rem; font-weight:bold; color:#1B3A6B; }
+  .impressao-subtitulo-cislagos{ font-size:0.75rem; color:#697079; }
+  .area-impressao h1{ font-size:1.25rem; color:#1B3A6B; margin:0 0 2px; }
+  .impressao-estabelecimento{ font-size:0.95rem; color:#697079; margin:0 0 20px; }
+  .impressao-texto{ font-size:0.95rem; white-space:pre-line; }
+  .impressao-rodape{
+    margin-top:32px;
+    padding-top:12px;
+    border-top:1px solid #E0E5E2;
+    font-size:0.72rem;
+    color:#697079;
+    display:flex;
+    justify-content:space-between;
+  }
+  @page{ margin:18mm 16mm; }
 }
 
 @media (max-width:600px){
