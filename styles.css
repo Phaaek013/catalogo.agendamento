@@ -17,6 +17,15 @@
   --solicitacao-bg:#FBEAE0;
   --misto:#7A4EA8;
   --misto-bg:#F1E9FA;
+
+  --prep-ok:#2E8B3D;
+  --prep-ok-bg:#E7F5EA;
+  --prep-pendente:#C0392B;
+  --prep-pendente-bg:#FBEAEA;
+  --prep-parcial:#B4551E;
+  --prep-parcial-bg:#FBEAE0;
+  --prep-sem:#697079;
+  --prep-sem-bg:#EDEFEF;
 }
 
 *{box-sizing:border-box;}
@@ -144,6 +153,79 @@ body{
 .badge.sem_agenda{color:var(--sem_agenda); background:var(--sem_agenda-bg);}
 .badge.solicitacao{color:var(--solicitacao); background:var(--solicitacao-bg);}
 .badge.misto{color:var(--misto); background:var(--misto-bg);}
+
+.badge-preparo{
+  flex-shrink:0;
+  font-size:0.7rem;
+  font-weight:600;
+  padding:3px 9px;
+  border-radius:999px;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+.badge-preparo.com_preparo{color:var(--prep-ok); background:var(--prep-ok-bg);}
+.badge-preparo.sem_preparo{color:var(--prep-sem); background:var(--prep-sem-bg);}
+.badge-preparo.pendente{color:var(--prep-pendente); background:var(--prep-pendente-bg);}
+.badge-preparo.parcial{color:var(--prep-parcial); background:var(--prep-parcial-bg);}
+
+.badges-row{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  flex-shrink:0;
+}
+
+.preparo-nota{
+  font-size:0.78rem;
+  color:var(--prep-pendente);
+  background:var(--prep-pendente-bg);
+  padding:6px 10px;
+  border-radius:6px;
+}
+
+.preparos-toggle{
+  align-self:flex-start;
+  font-size:0.8rem;
+  font-weight:600;
+  color:var(--azul-claro);
+  background:none;
+  border:1px solid var(--azul-claro);
+  border-radius:6px;
+  padding:6px 12px;
+  cursor:pointer;
+}
+.preparos-toggle:hover{
+  background:var(--azul-claro);
+  color:#fff;
+}
+
+.preparos-lista{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.preparos-lista[hidden]{display:none;}
+
+.preparo-item{
+  border:1px solid var(--borda);
+  border-radius:8px;
+  padding:10px 12px;
+  background:#FAFAF8;
+}
+.preparo-item h3{
+  margin:0 0 6px;
+  font-size:0.86rem;
+  color:var(--azul);
+}
+.preparo-item p{
+  margin:0;
+  font-size:0.82rem;
+  line-height:1.5;
+  color:var(--texto);
+  white-space:pre-line;
+}
 
 .modalidade-detalhe{
   font-size:0.78rem;
