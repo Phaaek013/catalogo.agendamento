@@ -610,10 +610,10 @@ const ESTABELECIMENTOS = [
     {label:"Policlínica Cislagos", logradouro:"Rua Coronel Pedro Corrêa", numero:"234", bairro:"Centro", cidade:"Alfenas", uf:"MG", cep:"37130-065"}
   ],
   profissionais: [
-    {nome:"Flavio Assumpção Zambelli Loyola", especialidade:"Especialidade não informada"},
-    {nome:"Paulo Eduardo Rocha", especialidade:"Especialidade não informada"},
-    {nome:"Paulo Vilela Neto", especialidade:"Especialidade não informada"},
-    {nome:"Ricardo Cordeiro Leite", especialidade:"Especialidade não informada"}
+    {nome:"Flavio Assumpção Zambelli Loyola", especialidade:"Urologista"},
+    {nome:"Paulo Eduardo Rocha", especialidade:"Urologista"},
+    {nome:"Paulo Vilela Neto", especialidade:"Urologista"},
+    {nome:"Ricardo Cordeiro Leite", especialidade:"Urologista"}
   ]
 }
 ];
