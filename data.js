@@ -576,5 +576,44 @@ const ESTABELECIMENTOS = [
   modalidade: "com_agenda",
   enderecos: [{label:"", logradouro:"Rua João Paulino Damasceno", numero:"1381", complemento:"Sala 1", bairro:"Jardim Tropical", cidade:"Alfenas", uf:"MG", cep:"37133-602"}],
   profissionais: [{nome:"Alipio Jacintho Pereira Thiers Vieira", especialidade:"Urologista"}]
+},
+{
+  id: 75, nome: "Analises - Carvalho e Rosa Laboratório",
+  modalidade: "sem_agenda",
+  enderecos: [{label:"", logradouro:"Rua Gabriel Moura Leite", numero:"26", bairro:"Centro", cidade:"Alfenas", uf:"MG", cep:"37130-095"}],
+  profissionais: [],
+  observacao: "Profissionais de saúde ainda não informados."
+},
+{
+  id: 76, nome: "Associação Instituto de Preservação e Desenvolvimento - IPD",
+  modalidade: "sem_agenda",
+  enderecos: [{label:"", logradouro:"Avenida Princesa do Sul", numero:"1900", bairro:"Rezende", cidade:"Varginha", uf:"MG", cep:"37062-442"}],
+  profissionais: [
+    {nome:"Eliane Felicione Jardim", especialidade:"Farmacêutica Analista Clínico"},
+    {nome:"João Baptista Macuco Janini", especialidade:"Médico Anatomopatologista / Citopatologista / Patologista Clínico / Medicina Laboratorial"}
+  ]
+},
+{
+  id: 77, nome: "Lab. de Analises Clinicas Santa Monica e Lab. Alfenas",
+  modalidade: "sem_agenda",
+  enderecos: [{label:"", logradouro:"Rua Martins Alfenas", numero:"1648", bairro:"Centro", cidade:"Alfenas", uf:"MG", cep:"37132-018"}],
+  profissionais: [
+    {nome:"Amanda de Araujo Zazeri", especialidade:"Biomédico"},
+    {nome:"Natalia Anastaci de Souza Barbosa", especialidade:"Farmacêutico"}
+  ]
+},
+{
+  id: 78, nome: "Única Hospital Dia",
+  modalidade: "solicitacao",
+  enderecos: [
+    {label:"Única Hospital Dia", logradouro:"Rua João Paulino Damasceno", numero:"1828", bairro:"Residencial Euroville", cidade:"Alfenas", uf:"MG", cep:"37133-660"},
+    {label:"Policlínica Cislagos", logradouro:"Rua Coronel Pedro Corrêa", numero:"234", bairro:"Centro", cidade:"Alfenas", uf:"MG", cep:"37130-065"}
+  ],
+  profissionais: [
+    {nome:"Flavio Assumpção Zambelli Loyola", especialidade:"Especialidade não informada"},
+    {nome:"Paulo Eduardo Rocha", especialidade:"Especialidade não informada"},
+    {nome:"Paulo Vilela Neto", especialidade:"Especialidade não informada"},
+    {nome:"Ricardo Cordeiro Leite", especialidade:"Especialidade não informada"}
+  ]
 }
 ];
