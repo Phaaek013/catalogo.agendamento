@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catálogo de Prestadores — CISLAGOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,7 +25,11 @@
 
   <section class="controls">
     <div class="search-box">
-      <input type="text" id="busca" placeholder="Buscar por estabelecimento, profissional ou especialidade...">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="busca" placeholder="Buscar por estabelecimento, profissional, especialidade ou procedimento...">
     </div>
     <div class="filters">
       <select id="filtroModalidade">
@@ -51,11 +58,30 @@
 
   <section id="listaEstabelecimentos" class="lista"></section>
 
-  <p id="semResultados" class="sem-resultados" hidden>Nenhum estabelecimento encontrado com esses filtros.</p>
+  <div id="semResultados" class="sem-resultados" hidden>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <p>Nenhum estabelecimento encontrado com esses filtros.</p>
+  </div>
 
 </main>
 
 <div id="areaImpressao" class="area-impressao"></div>
+
+<div id="modalOverlay" class="modal-overlay" hidden>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitulo"></h2>
+        <p id="modalSubtitulo" class="modal-subtitulo"></p>
+      </div>
+      <button type="button" id="modalFechar" class="modal-fechar" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="modal-body" id="modalCorpo"></div>
+  </div>
+</div>
 
 <footer class="rodape">
   <p>CISLAGOS — Consórcio Intermunicipal de Saúde dos Municípios da Região dos Lagos do Sul de Minas · CNPJ 01.243.423/0001-03</p>

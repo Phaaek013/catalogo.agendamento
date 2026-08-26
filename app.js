@@ -20,8 +20,37 @@ const els = {
   filtroPreparo: document.getElementById('filtroPreparo'),
   lista: document.getElementById('listaEstabelecimentos'),
   resultCount: document.getElementById('resultCount'),
-  semResultados: document.getElementById('semResultados')
+  semResultados: document.getElementById('semResultados'),
+  modalOverlay: document.getElementById('modalOverlay'),
+  modalTitulo: document.getElementById('modalTitulo'),
+  modalSubtitulo: document.getElementById('modalSubtitulo'),
+  modalCorpo: document.getElementById('modalCorpo'),
+  modalFechar: document.getElementById('modalFechar')
 };
+
+function abrirModal(titulo, subtitulo, montarCorpo) {
+  els.modalTitulo.textContent = titulo;
+  els.modalSubtitulo.textContent = subtitulo || '';
+  els.modalSubtitulo.hidden = !subtitulo;
+  els.modalCorpo.innerHTML = '';
+  montarCorpo(els.modalCorpo);
+  els.modalOverlay.hidden = false;
+  document.body.classList.add('modal-aberto');
+}
+
+function fecharModal() {
+  els.modalOverlay.hidden = true;
+  document.body.classList.remove('modal-aberto');
+  els.modalCorpo.innerHTML = '';
+}
+
+els.modalFechar.addEventListener('click', fecharModal);
+els.modalOverlay.addEventListener('click', (ev) => {
+  if (ev.target === els.modalOverlay) fecharModal();
+});
+window.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Escape' && !els.modalOverlay.hidden) fecharModal();
+});
 
 function popularFiltros() {
   const cidades = new Set();
@@ -123,7 +152,8 @@ function estabelecimentoMatch(e, termo, modalidade, cidade, especialidade, prepa
     const nomeMatch = normalizar(e.nome).includes(t);
     const profMatch = e.profissionais.some(p => normalizar(p.nome).includes(t) || normalizar(p.especialidade).includes(t));
     const cidadeMatch = e.enderecos.some(end => normalizar(end.cidade).includes(t));
-    if (!nomeMatch && !profMatch && !cidadeMatch) return false;
+    const procMatch = !!(e.procedimentos && e.procedimentos.some(p => normalizar(p.procedimento).includes(t)));
+    if (!nomeMatch && !profMatch && !cidadeMatch && !procMatch) return false;
   }
   return true;
 }
@@ -165,6 +195,20 @@ function renderCard(e, termo) {
     card.appendChild(det);
   }
 
+  if (termo && e.procedimentos && e.procedimentos.length) {
+    const t = normalizar(termo);
+    const encontrados = e.procedimentos.filter(p => normalizar(p.procedimento).includes(t));
+    if (encontrados.length) {
+      const achado = document.createElement('div');
+      achado.className = 'procedimento-achado';
+      const MOSTRAR = 3;
+      achado.innerHTML = encontrados.slice(0, MOSTRAR).map(p =>
+        `<div class="procedimento-achado-item"><span>${destacar(p.procedimento, termo)}</span><strong>${p.valor}</strong></div>`
+      ).join('') + (encontrados.length > MOSTRAR ? `<div class="procedimento-achado-mais">+ ${encontrados.length - MOSTRAR} outro${encontrados.length - MOSTRAR > 1 ? 's' : ''} procedimento${encontrados.length - MOSTRAR > 1 ? 's' : ''} encontrado${encontrados.length - MOSTRAR > 1 ? 's' : ''}</div>` : '');
+      card.appendChild(achado);
+    }
+  }
+
   if (e.profissionais.length) {
     const tituloProf = document.createElement('div');
     tituloProf.className = 'secao-titulo';
@@ -195,50 +239,113 @@ function renderCard(e, termo) {
     card.appendChild(nota);
   }
 
+  const acoes = document.createElement('div');
+  acoes.className = 'card-acoes';
+
   if (e.preparos && e.preparos.length) {
     const toggle = document.createElement('button');
     toggle.type = 'button';
     toggle.className = 'preparos-toggle';
     toggle.textContent = `Ver preparo${e.preparos.length > 1 ? 's' : ''} (${e.preparos.length})`;
-
-    const listaPrep = document.createElement('div');
-    listaPrep.className = 'preparos-lista';
-    listaPrep.hidden = true;
-    e.preparos.forEach(p => {
-      const item = document.createElement('div');
-      item.className = 'preparo-item';
-
-      const itemHeader = document.createElement('div');
-      itemHeader.className = 'preparo-item-header';
-
-      const h3 = document.createElement('h3');
-      h3.innerHTML = destacar(p.procedimento, termo);
-      itemHeader.appendChild(h3);
-
-      const btnImprimir = document.createElement('button');
-      btnImprimir.type = 'button';
-      btnImprimir.className = 'preparo-imprimir';
-      btnImprimir.textContent = 'Imprimir';
-      btnImprimir.addEventListener('click', () => imprimirPreparo(e.nome, p.procedimento, p.texto));
-      itemHeader.appendChild(btnImprimir);
-
-      const par = document.createElement('p');
-      par.textContent = p.texto;
-
-      item.appendChild(itemHeader);
-      item.appendChild(par);
-      listaPrep.appendChild(item);
-    });
-
     toggle.addEventListener('click', () => {
-      listaPrep.hidden = !listaPrep.hidden;
-      toggle.textContent = listaPrep.hidden
-        ? `Ver preparo${e.preparos.length > 1 ? 's' : ''} (${e.preparos.length})`
-        : 'Ocultar preparos';
-    });
+      abrirModal(e.nome, `Preparo${e.preparos.length > 1 ? 's' : ''} de exame`, (corpo) => {
+        e.preparos.forEach(p => {
+          const item = document.createElement('div');
+          item.className = 'preparo-item';
 
-    card.appendChild(toggle);
-    card.appendChild(listaPrep);
+          const itemHeader = document.createElement('div');
+          itemHeader.className = 'preparo-item-header';
+
+          const h3 = document.createElement('h3');
+          h3.textContent = p.procedimento;
+          itemHeader.appendChild(h3);
+
+          const btnImprimir = document.createElement('button');
+          btnImprimir.type = 'button';
+          btnImprimir.className = 'preparo-imprimir';
+          btnImprimir.textContent = 'Imprimir';
+          btnImprimir.addEventListener('click', () => imprimirPreparo(e.nome, p.procedimento, p.texto));
+          itemHeader.appendChild(btnImprimir);
+
+          const par = document.createElement('p');
+          par.textContent = p.texto;
+
+          item.appendChild(itemHeader);
+          item.appendChild(par);
+          corpo.appendChild(item);
+        });
+      });
+    });
+    acoes.appendChild(toggle);
+  }
+
+  if (e.procedimentos && e.procedimentos.length) {
+    const toggleProc = document.createElement('button');
+    toggleProc.type = 'button';
+    toggleProc.className = 'procedimentos-toggle';
+    toggleProc.textContent = `Ver procedimentos e valores (${e.procedimentos.length})`;
+    toggleProc.addEventListener('click', () => {
+      abrirModal(e.nome, `Procedimentos e valores (${e.procedimentos.length})`, (corpo) => {
+        const termoNormalizado = normalizar(termo);
+        const termoCorrespondeProc = !!(termo && e.procedimentos.some(p => normalizar(p.procedimento).includes(termoNormalizado)));
+        const termoInicial = termoCorrespondeProc ? termo : '';
+
+        const precisaBusca = e.procedimentos.length > 15 || !!termoInicial;
+        let buscaProcInput = null;
+
+        if (precisaBusca) {
+          buscaProcInput = document.createElement('input');
+          buscaProcInput.type = 'text';
+          buscaProcInput.className = 'procedimentos-busca';
+          buscaProcInput.placeholder = 'Buscar procedimento...';
+          buscaProcInput.value = termoInicial;
+          corpo.appendChild(buscaProcInput);
+        }
+
+        const tabela = document.createElement('table');
+        tabela.className = 'procedimentos-tabela';
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>Procedimento</th><th>Valor</th></tr>';
+        const tbody = document.createElement('tbody');
+        tabela.appendChild(thead);
+        tabela.appendChild(tbody);
+
+        const vazioProc = document.createElement('p');
+        vazioProc.className = 'procedimentos-vazio';
+        vazioProc.textContent = 'Nenhum procedimento encontrado.';
+        vazioProc.hidden = true;
+
+        function renderProcedimentos(termoBusca) {
+          const t = normalizar(termoBusca || '');
+          tbody.innerHTML = '';
+          const itens = t
+            ? e.procedimentos.filter(p => normalizar(p.procedimento).includes(t))
+            : e.procedimentos;
+          itens.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${destacar(p.procedimento, termoBusca)}</td><td>${p.valor}</td>`;
+            tbody.appendChild(tr);
+          });
+          vazioProc.hidden = itens.length !== 0;
+        }
+
+        renderProcedimentos(termoInicial);
+
+        if (buscaProcInput) {
+          buscaProcInput.addEventListener('input', () => renderProcedimentos(buscaProcInput.value));
+        }
+
+        corpo.appendChild(tabela);
+        corpo.appendChild(vazioProc);
+
+        if (buscaProcInput) buscaProcInput.focus();
+      });
+    });
+    acoes.appendChild(toggleProc);
+  }
+
+  if (acoes.childElementCount) {
+    card.appendChild(acoes);
   }
 
   const tituloEnd = document.createElement('div');
