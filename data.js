@@ -1612,7 +1612,7 @@ Rua Dona Zica, 130/132, Vila Pinto — Tel.: (35) 3222-1255 / 98832-2745 (consul
 },
 {
   id: 24, nome: "Corpus Tomografia Alfenas",
-  modalidade: "solicitacao",
+  modalidade: "com_agenda",
   enderecos: [{label:"Clínica Corpus Unidade Alfenas", logradouro:"Rua Adolfo Engel", numero:"19", complemento:"Sala 175", bairro:"Loteamento Siqueira", cidade:"Alfenas", uf:"MG", cep:"37133-613"}],
   profissionais: [{nome:"Raphael Monteiro Ferreira de Oliveira", especialidade:"Radiologia e Diagnóstico por Imagem"}],
   preparoStatus: "pendente",
